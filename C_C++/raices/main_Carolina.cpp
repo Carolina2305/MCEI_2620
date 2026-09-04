@@ -30,11 +30,11 @@ int main()
   // Indica que no se necesitan parámetros adicionales para f.
   F.params = nullptr;
   // Define el extremo inferior del intervalo inicial.
-  double x_lo = 1.0;
+  double x_lo = 2.0;
   // Define el extremo superior del intervalo inicial.
   double x_hi = 3.0;
-  // Selecciona el método de bisección.
-  T = gsl_root_fsolver_bisection;
+  // Selecciona el método de posición falsa.
+  T = gsl_root_fsolver_falsepos;
   // Reserva memoria para el solucionador usando el método seleccionado.
   s = gsl_root_fsolver_alloc(T);
   // Configura el solucionador con la función y el intervalo inicial.
@@ -56,7 +56,7 @@ int main()
   {
     // Aumenta en uno el número de iteración.
     iter++;
-    // Realiza una iteración del método de bisección.
+    // Realiza una iteración del método de posición falsa.
     status = gsl_root_fsolver_iterate(s);
     // Obtiene la aproximación actual de la raíz.
     r = gsl_root_fsolver_root(s);
