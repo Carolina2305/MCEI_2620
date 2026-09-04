@@ -17,6 +17,6 @@ Falsa posición | 2.12842 |  10         |
   Secante      | 0.20164 |  5          | Es el primer método que hace la misma cantidad de iteraciones para la raiz que está por debajo de 0 y la que está por encima de 2 en rápidez sigue siendo uno de los mas rapidos pero mantiene los mismos ajustes que los de Newton por lo que es tambien más robusto.
   Secante      | 2.12842 |  5          |
 ----------------------------------------------
-
-
-
+  steffenson   | 0.20164 |  4          | Este tiene el mismo comportamiento que el de Newton para el caso del codigo implementado con ayuda de una ia (gemini) por lo que no sabria definir entre este y el de Newton cual seria el mejor.   steffenson   | 0.20164 |  4          |
+  steffenson   | 2.12842 |  5          |
+----------------------------------------------

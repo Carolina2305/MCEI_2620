@@ -43,10 +43,10 @@ int main()
   F.params = nullptr;
   // Define el extremo inferior del intervalo inicial.
   // Valor inicial (semilla) para el método de secante.
-  double x = 2.0;
+  double x = 0.0;
   double x_prev;
   // Selecciona el método de secante.
-  T = gsl_root_fdfsolver_secant;
+  T = gsl_root_fdfsolver_steffenson;
   // Reserva memoria para el solucionador usando el método seleccionado.
   s = gsl_root_fdfsolver_alloc(T);
   // Configura el solucionador con la función y la aproximación inicial.
