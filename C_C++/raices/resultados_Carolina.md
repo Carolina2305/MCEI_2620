@@ -11,6 +11,10 @@ Falsa posición | 2.12842 |  10         |
   Brent        | 0.20164 |  6          | Con este metodo aumento la rapidez para encontrar las raices a comparacion de los otros dos en la deteccion de los dos intervalos que he estado evaluando
   Brent        | 2.12842 |  7          |
 ----------------------------------------------
+  Newton       | 0.20164 |  4          | Este metodo redujo el numero de iteraciones pero su implementacion requirio cambiar muchos detalles del codigo base tanto añadir cosas a lo que ya etaba como añadir la funcion derivada por lo que es mas rapido pero no considero que sea el mas eficiente si lo comparamos por ejemplo con el anterior.
+  Newton       | 2.12842 |  5          |
+----------------------------------------------
+
 
 
 

@@ -8,38 +8,49 @@
 #include <gsl/gsl_roots.h>
 // Incluye constantes y códigos de estado utilizados por GSL.
 #include <gsl/gsl_errno.h>
-
 // Define la función de la que se busca una raíz, es decir, un valor x tal que f(x)=x^3-5x+1.
 double f(double x, void *params)
 {
   // Calcula x^3 - 5x + 1.
   return std::pow(x, 3) - 5 * x + 1;
 }
+// --- AGREGA ESTA FUNCIÓN AQUÍ ---
+double df(double x, void *params)
+{
+  // Calcula la derivada: 3x^2 - 5
+  return 3 * std::pow(x, 2) - 5;
+}
 
+// Evalúa la función y su derivada de forma simultánea.
+void fdf(double x, void *params, double *y, double *dy)
+{
+  *y = f(x, params);
+  *dy = df(x, params); // Ahora sí reconocerá a df
+}
 // Punto de inicio de la ejecución del programa.
 int main()
 {
   // Puntero al tipo de método numérico que se utilizará.
-  const gsl_root_fsolver_type *T;
+  const gsl_root_fdfsolver_type *T;
   // Puntero al solucionador de raíces reservado por GSL.
-  gsl_root_fsolver *s;
-  // Estructura de GSL que contiene la función y sus parámetros.
-  gsl_function F;
-  // Asocia la función f con la estructura que utilizará GSL.
-  F.function = &f;
-  // Indica que no se necesitan parámetros adicionales para f.
+  gsl_root_fdfsolver *s;
+  // Estructura de GSL que contiene la función, su derivada y sus parámetros.
+  gsl_function_fdf F;
+  // Asocia la función, su derivada y la función conjunta con la estructura.
+  F.f = &f;
+  F.df = &df;
+  F.fdf = &fdf;
   F.params = nullptr;
   // Define el extremo inferior del intervalo inicial.
-  double x_lo = 2.0;
-  // Define el extremo superior del intervalo inicial.
-  double x_hi = 3.0;
-  // Selecciona el método de Brent.
-  T = gsl_root_fsolver_brent;
+  // Valor inicial (semilla) para el método de Newton.
+  double x = 0.0;
+  double x_prev;
+  // Selecciona el método de Newton.
+  T = gsl_root_fdfsolver_newton;
   // Reserva memoria para el solucionador usando el método seleccionado.
-  s = gsl_root_fsolver_alloc(T);
-  // Configura el solucionador con la función y el intervalo inicial.
-  gsl_root_fsolver_set(s, &F, x_lo, x_hi);
-  // Imprime los encabezados de las columnas de resultados.
+  s = gsl_root_fdfsolver_alloc(T);
+  // Configura el solucionador con la función y la aproximación inicial.
+  gsl_root_fdfsolver_set(s, &F, x);
   std::cout << "iter\t" << "inf\t" << "sup\t" << "raíz\n";
 
   // Almacena el estado de cada operación realizada por GSL.
@@ -56,26 +67,25 @@ int main()
   {
     // Aumenta en uno el número de iteración.
     iter++;
-    // Realiza una iteración del método de Brent.
-    status = gsl_root_fsolver_iterate(s);
+    x_prev = x;
+    // Realiza una iteración del método de Newton.
+    status = gsl_root_fdfsolver_iterate(s);
     // Obtiene la aproximación actual de la raíz.
-    r = gsl_root_fsolver_root(s);
-    // Obtiene el límite inferior del intervalo actualizado.
-    x_lo = gsl_root_fsolver_x_lower(s);
-    // Obtiene el límite superior del intervalo actualizado.
-    x_hi = gsl_root_fsolver_x_upper(s);
-    // Muestra la iteración, los límites y la raíz aproximada.
-    std::cout << iter << "\t" << x_lo << "\t" << x_hi << "\t" << r << "\n";
-    // Termina cuando el intervalo es suficientemente pequeño.
+    x = gsl_root_fdfsolver_root(s);
+
+    // Muestra la iteración y la raíz aproximada.
+    std::cout << iter << "\t" << x << "\n";
+
+    // Evalúa si el cambio entre la aproximación actual y la anterior cumple la tolerancia.
     // 0.0 es la tolerancia absoluta y 1e-8 la tolerancia relativa.
-    status = gsl_root_test_interval(x_lo, x_hi, 0.0, 1e-8);
+    status = gsl_root_test_delta(x, x_prev, 0.0, 1e-8);
     // Continúa mientras GSL pida más iteraciones y no se alcance el máximo.
   } while (status == GSL_CONTINUE && iter < max_iter);
 
   // Muestra la última aproximación calculada.
-  std::cout << "\nRaiz encontrada = " << r << std::endl;
+  std::cout << "\nRaiz encontrada = " << x << std::endl;
   // Libera la memoria reservada para el solucionador.
-  gsl_root_fsolver_free(s);
+  gsl_root_fdfsolver_free(s);
   // Indica que el programa terminó correctamente.
   return 0;
 }
