@@ -14,7 +14,9 @@ Falsa posición | 2.12842 |  10         |
   Newton       | 0.20164 |  4          | Este metodo redujo el numero de iteraciones pero su implementacion requirio cambiar muchos detalles del codigo base tanto añadir cosas a lo que ya etaba como añadir la funcion derivada por lo que es mas rapido pero no considero que sea el mas eficiente si lo comparamos por ejemplo con el anterior.
   Newton       | 2.12842 |  5          |
 ----------------------------------------------
-
+  Secante      | 0.20164 |  5          | Es el primer método que hace la misma cantidad de iteraciones para la raiz que está por debajo de 0 y la que está por encima de 2 en rápidez sigue siendo uno de los mas rapidos pero mantiene los mismos ajustes que los de Newton por lo que es tambien más robusto.
+  Secante      | 2.12842 |  5          |
+----------------------------------------------
 
 
 

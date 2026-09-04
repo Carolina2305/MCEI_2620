@@ -14,7 +14,7 @@ double f(double x, void *params)
   // Calcula x^3 - 5x + 1.
   return std::pow(x, 3) - 5 * x + 1;
 }
-// --- AGREGA ESTA FUNCIÓN AQUÍ ---
+
 double df(double x, void *params)
 {
   // Calcula la derivada: 3x^2 - 5
@@ -42,11 +42,11 @@ int main()
   F.fdf = &fdf;
   F.params = nullptr;
   // Define el extremo inferior del intervalo inicial.
-  // Valor inicial (semilla) para el método de Newton.
-  double x = 0.0;
+  // Valor inicial (semilla) para el método de secante.
+  double x = 2.0;
   double x_prev;
-  // Selecciona el método de Newton.
-  T = gsl_root_fdfsolver_newton;
+  // Selecciona el método de secante.
+  T = gsl_root_fdfsolver_secant;
   // Reserva memoria para el solucionador usando el método seleccionado.
   s = gsl_root_fdfsolver_alloc(T);
   // Configura el solucionador con la función y la aproximación inicial.
@@ -68,7 +68,7 @@ int main()
     // Aumenta en uno el número de iteración.
     iter++;
     x_prev = x;
-    // Realiza una iteración del método de Newton.
+    // Realiza una iteración del método de secante.
     status = gsl_root_fdfsolver_iterate(s);
     // Obtiene la aproximación actual de la raíz.
     x = gsl_root_fdfsolver_root(s);
